@@ -381,17 +381,33 @@ npm install -g @angular/cli@latest
 ng --version
 ```
 
-1. Install Bazel
+2. Install Bazel
 ```bash
 npm install -g @angular/bazel
 ```
 
-2. Create an application
+3. Create an application
 ```bash
 ng new --collection=@angular/bazel
 ```
 
-3. Build the application
+4. Build the application
 ```bash
 ng build --leaveBazelFilesOnDisk
+```
+
+Compare to Blank Workspace with app and lib
+1. Create worksapce
+```bash
+ng new --createApplication=false
+```
+
+2. Add an app
+```bash
+ng g app my-app
+```
+
+3. Add a lib
+```bash
+ng g lib my-lib
 ```
