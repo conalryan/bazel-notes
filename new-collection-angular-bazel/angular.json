@@ -3,39 +3,39 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "new-collection-angular-bazel": {
+    "my-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
       },
-      "root": "",
-      "sourceRoot": "src",
+      "root": "projects/my-app",
+      "sourceRoot": "projects/my-app/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/bazel:build",
           "options": {
-            "targetLabel": "//src:prodapp",
+            "targetLabel": "//projects/my-app/src:prodapp",
             "bazelCommand": "build"
           },
           "configurations": {
             "production": {
-              "targetLabel": "//src:prodapp"
+              "targetLabel": "//projects/my-app/src:prodapp"
             }
           }
         },
         "serve": {
           "builder": "@angular/bazel:build",
           "options": {
-            "targetLabel": "//src:devserver",
+            "targetLabel": "//projects/my-app/src:devserver",
             "bazelCommand": "run",
             "watch": true
           },
           "configurations": {
             "production": {
-              "targetLabel": "//src:prodserver"
+              "targetLabel": "//projects/my-app/src:prodserver"
             }
           }
         },
@@ -49,7 +49,7 @@
           "builder": "@angular/bazel:build",
           "options": {
             "bazelCommand": "test",
-            "targetLabel": "//src:test"
+            "targetLabel": "//projects/my-app/src:test"
           }
         },
         "lint": {
@@ -69,11 +69,11 @@
           "builder": "@angular/bazel:build",
           "options": {
             "bazelCommand": "test",
-            "targetLabel": "//e2e:devserver_test"
+            "targetLabel": "//projects/my-app/e2e:devserver_test"
           },
           "configurations": {
             "production": {
-              "targetLabel": "//e2e:prodserver_test"
+              "targetLabel": "//projects/my-app/e2e:prodserver_test"
             }
           }
         }
