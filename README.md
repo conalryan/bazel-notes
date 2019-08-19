@@ -369,3 +369,29 @@ A repository rule should generally be responsible for:
 - Generating or symlinking BUILD files into the external repository directory.
 
 - Avoid using `repository_ctx.execute` when possible. For example, when using a non-Bazel C++ library that has a build using Make, it is preferable to use `repository_ctx.download()` and then write a `BUILD` file that builds it, instead of running ctx.execute(["make"]).
+
+[Angular.io Building with Bazel](https://angular.io/guide/bazel)
+==================================================================================================
+
+1. Upgrade to Angular-CLI 8
+```bash
+npm uninstall -g angular-cli
+npm cache verify
+npm install -g @angular/cli@latest
+ng --version
+```
+
+1. Install Bazel
+```bash
+npm install -g @angular/bazel
+```
+
+2. Create an application
+```bash
+ng new --collection=@angular/bazel
+```
+
+3. Build the application
+```bash
+ng build --leaveBazelFilesOnDisk
+```
