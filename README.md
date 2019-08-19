@@ -411,3 +411,14 @@ ng g app my-app
 ```bash
 ng g lib my-lib
 ```
+
+Create Angular Bazel and move files to app and lib
+1. Create an application
+```bash
+ng new --collection=@angular/bazel
+```
+
+2. Build the application
+```bash
+ng build --leaveBazelFilesOnDisk
+```
