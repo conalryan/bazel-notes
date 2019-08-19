@@ -49,7 +49,7 @@ rollup_bundle(
     name = "bundle",
     entry_point = ":main.prod.ts",
     deps = [
-        "//projects/my-app/src",
+        "//apps/my-app/src",
         "@npm//@angular/router",
         "@npm//rxjs",
     ],
