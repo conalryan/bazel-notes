@@ -134,6 +134,8 @@ filegroup(
 # This scales really well for massive codebases.
 ts_devserver(
     name = "devserver",
+    port = 4200,
+    # serving_path = "/bundle.min.js",
     # Serve these files but don't inject tags for them into the index file
     # This might be because we only want to lazy-load these scripts on-demand,
     # or because they aren't compatible with Require.js so we must use a runtime
@@ -144,7 +146,7 @@ ts_devserver(
     # Start from the development version of the main
     entry_module = "project/apps/my-app/src/main.dev",
     # <script> and <link> tags will be automatically injected into this index file
-    index_html = ":assets",
+    index_html = "index.html",
     # These scripts will be included in the JS bundle after require.js
     # They should have only named UMD modules, or require.js will throw.
     scripts = [
@@ -159,9 +161,13 @@ ts_devserver(
     ],
     # Serve these files in addition to the JavaScript bundle
     # The corresponding <script> or <link> tags will be injected into the index_html
-    static_files = _ASSETS,
+    #static_files = _ASSETS,
+    static_files = [
+        "@npm//:node_modules/zone.js/dist/zone.min.js",
+        ":global_stylesheet",
+    ],
     # Tell Bazel to build the sources first
-    deps = ["//apps/my-app/src"],
+    deps = [":src"], # or //apps/my-app/src works too
 )
 
 
