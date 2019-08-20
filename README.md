@@ -186,8 +186,8 @@ If the target is a **rule target**, then `path/to/package` is the path to the di
 
 If the target is a **file target**, then `path/to/package` is the path to the root of the package, and `target-name` is the name of the target file, including its full path.
 
-When referencing targets within the same package, you can skip the package path and just use `//:target-name`. 
-When referencing targets within the same `BUILD` file, you can even skip the `// workspace root` identifier and just use `:target-name`.
+When referencing **targets** within the **same** **package**, you can skip the package path and just use `//:target-name`. 
+When referencing **targets** within the **same** `BUILD` **file**, you can even skip the `// workspace root` identifier and just use `:target-name`.
 
 Targets in the `java-tutorial/BUILD` file, you did not have to specify a package path, since the workspace root is itself a package (`//`), and your two target labels were simply `//:ProjectRunner` and `//:greeter`.
 
@@ -394,6 +394,23 @@ ng new --collection=@angular/bazel
 4. Build the application
 ```bash
 ng build --leaveBazelFilesOnDisk
+# bazel build //src:prodapp
+```
+
+5. Test the application
+```bash
+ng test
+# bazel test //src:test
+# bazel test //src:test_chromium-local
+
+ng e2e
+# bazel test //e2e:devserver_test_chromium-local
+```
+
+6. Run
+```bash
+ng server
+# bazel run //src:devserver
 ```
 
 Compare to Blank Workspace with app and lib
@@ -421,4 +438,25 @@ ng new --collection=@angular/bazel
 2. Build the application
 ```bash
 ng build --leaveBazelFilesOnDisk
+# bazel build //apps/my-app/src:prodapp
+```
+
+3. Test the application
+```bash
+ng test
+# bazel test //apps/my-app/src:test
+# bazel test //apps/my-app/src:test_chromium-local
+
+# Change e2e BUILD.bazel //src:<target-name> to //
+ng e2e
+
+apps/my-app/src:<target-name>
+
+# bazel test //apps/my-app/e2e:devserver_test_chromium-local
+```
+
+4. Run
+```bash
+ng serve
+# bazel run //src:devserver
 ```
