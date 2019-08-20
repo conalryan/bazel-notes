@@ -1,0 +1,24 @@
+# Generated BUILD file, see /tools/generator
+load("@npm_angular_bazel//:index.bzl", "ng_module")
+
+package(default_visibility = ["//:__subpackages__"])
+
+ng_module(
+    name = "my-lib",
+    srcs = [
+        "my-lib.module.ts",
+        "my-lib.component.ts",
+        "my-lib.service.ts"
+    ],
+    tsconfig = "//:tsconfig.json",
+    deps = [
+        "@npm//@angular/core"
+    ]
+)
+
+# ts_library(
+#     name = "shorten",
+#     srcs = ["shorten.ts"],
+#     module_name = "@bazel/shorten",
+#     module_root = "shorten",
+# )

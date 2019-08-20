@@ -42,6 +42,7 @@ ng_module(
         "@npm//@angular/router",
         "@npm//@types",
         "@npm//rxjs",
+        "//libs/my-lib"
     ],
 )
 
