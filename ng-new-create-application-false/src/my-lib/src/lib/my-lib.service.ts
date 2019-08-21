@@ -7,7 +7,7 @@ export class MyLibService {
 
   constructor() { }
 
-  getLibServiceMessage = (): string => {
-     return 'hello from MyLibService';
+  libMessage(): string {
+    return 'hello from my lib service';
   }
 }
