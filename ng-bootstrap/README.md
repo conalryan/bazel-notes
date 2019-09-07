@@ -1,56 +1,27 @@
-## Ng-Bootstrap
-1. Create worksapce
-```bash
-ng new --createApplication=false
-# called ng-bootsrap
-```
+# NgBootstrap
 
-2. Add an app
-```bash
-ng g app my-app
-```
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.2.
 
-3. Add a lib
-```bash
-ng g lib my-lib
-```
+## Development server
 
-4. Add ng-bootstrap
-```bash
-yarn add @ng-bootstrap/ng-bootstrap
-# or
-# npm install --save @ng-bootstrap/ng-bootstrap
-```
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-5. Add ng-alert to app.component.html
-```html
-<ngb-alert [dismissible]="false">
-  <strong>Warning!</strong> Better check yourself, you're not looking too good.
-</ngb-alert>
-```
+## Code scaffolding
 
-6. Add NgbModule to app.module
-```ts
-import {NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
-// ...
-imports: [
-  //...
-  NgbAlertModule,
-  //...
-]
-```
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-7. Note if you want Bootstrap stylings
-Option 1: Add boostrap.css as stylesheet to index.html
-```html
-<link rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-```
+## Build
 
-Option 2: Add vid npm and add bootstrap.scss to styles.scss
-```bash
-yarn add bootstrap
-```
-```scss
-@import '~bootstrap/scss/bootstrap';
-```
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
