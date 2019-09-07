@@ -6,8 +6,4 @@ import { Injectable } from '@angular/core';
 export class MyLibService {
 
   constructor() { }
-
-  libMessage(): string {
-    return 'hello from my lib service';
-  }
 }
