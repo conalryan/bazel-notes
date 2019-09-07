@@ -6,11 +6,11 @@ load("@npm_bazel_typescript//:defs.bzl", "ts_library")
 package(default_visibility = ["//:__subpackages__"])
 
 ng_module(
-    name = "my-lib",
+    name = "my-lib-2",
     srcs = [
-        "my-lib.module.ts",
-        "my-lib.component.ts",
-        "my-lib.service.ts"
+        "my-lib-2.module.ts",
+        "my-lib-2.component.ts",
+        "my-lib-2.service.ts"
     ],
     tsconfig = "//:tsconfig.json",
     deps = [
@@ -24,7 +24,6 @@ ts_library(
     srcs = glob(["**/*.spec.ts"]),
     tsconfig = "//:tsconfig-test",
     deps = [
-        ":my-lib",
         "@npm//@angular/core",
         "@npm//@angular/platform-browser",
         "@npm//@angular/platform-browser-dynamic",

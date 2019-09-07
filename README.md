@@ -419,7 +419,12 @@ Compare to Blank Workspace with app and lib
 ng new --createApplication=false
 ```
 
-2. Add an app
+2. Modify angular.json "newProjectRoot": "projects" to
+```json
+"newProjectRoot": "src",
+```
+
+3. Add an app
 ```bash
 ng g app my-app
 ```
@@ -429,34 +434,7 @@ ng g app my-app
 ng g lib my-lib
 ```
 
-Create Angular Bazel and move files to app and lib
-1. Create an application
+4. Add Bazel
 ```bash
-ng new --collection=@angular/bazel
-```
-
-2. Build the application
-```bash
-ng build --leaveBazelFilesOnDisk
-# bazel build //apps/my-app/src:prodapp
-```
-
-3. Test the application
-```bash
-ng test
-# bazel test //apps/my-app/src:test
-# bazel test //apps/my-app/src:test_chromium-local
-
-# Change e2e BUILD.bazel //src:<target-name> to //
-ng e2e
-
-apps/my-app/src:<target-name>
-
-# bazel test //apps/my-app/e2e:devserver_test_chromium-local
-```
-
-4. Run
-```bash
-ng serve
-# bazel run //src:devserver
+ng add @angular/bazel
 ```

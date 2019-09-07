@@ -1,3 +1,5 @@
+// This is a backup file of the original angular.json. This file is needed in case you want to revert to the workflow without Bazel.
+
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
@@ -15,27 +17,63 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/bazel:build",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "targetLabel": "//src:prodapp",
-            "bazelCommand": "build"
+            "outputPath": "dist/my-app",
+            "index": "src/my-app/src/index.html",
+            "main": "src/my-app/src/main.ts",
+            "polyfills": "src/my-app/src/polyfills.ts",
+            "tsConfig": "src/my-app/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "src/my-app/src/favicon.ico",
+              "src/my-app/src/assets"
+            ],
+            "styles": [
+              "src/my-app/src/styles.scss"
+            ],
+            "scripts": []
           },
           "configurations": {
             "production": {
-              "targetLabel": "//src:prodapp"
+              "fileReplacements": [
+                {
+                  "replace": "src/my-app/src/environments/environment.ts",
+                  "with": "src/my-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
             }
           }
         },
         "serve": {
-          "builder": "@angular/bazel:build",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "targetLabel": "//src:devserver",
-            "bazelCommand": "run",
-            "watch": true
+            "browserTarget": "my-app:build"
           },
           "configurations": {
             "production": {
-              "targetLabel": "//src:prodserver"
+              "browserTarget": "my-app:build:production"
             }
           }
         },
@@ -46,10 +84,20 @@
           }
         },
         "test": {
-          "builder": "@angular/bazel:build",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "bazelCommand": "test",
-            "targetLabel": "//src:test"
+            "main": "src/my-app/src/test.ts",
+            "polyfills": "src/my-app/src/polyfills.ts",
+            "tsConfig": "src/my-app/tsconfig.spec.json",
+            "karmaConfig": "src/my-app/karma.conf.js",
+            "assets": [
+              "src/my-app/src/favicon.ico",
+              "src/my-app/src/assets"
+            ],
+            "styles": [
+              "src/my-app/src/styles.scss"
+            ],
+            "scripts": []
           }
         },
         "lint": {
@@ -66,14 +114,14 @@
           }
         },
         "e2e": {
-          "builder": "@angular/bazel:build",
+          "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "bazelCommand": "test",
-            "targetLabel": "//e2e:devserver_test"
+            "protractorConfig": "src/my-app/e2e/protractor.conf.js",
+            "devServerTarget": "my-app:serve"
           },
           "configurations": {
             "production": {
-              "targetLabel": "//e2e:prodserver_test"
+              "devServerTarget": "my-app:serve:production"
             }
           }
         }
