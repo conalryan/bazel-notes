@@ -109,22 +109,109 @@ yarn add popper.js
 
 ERROR:
 ```
-6:28 $ ng build
-ERROR: /Users/cryan/code/p/bazel/ng-bootstrap/src/BUILD.bazel:12:9: Traceback (most recent call last):
-        File "/Users/cryan/code/p/bazel/ng-bootstrap/src/BUILD.bazel", line 10
-                sass_binary(name = "global_stylesheet", src = ...], ...")
-        File "/Users/cryan/code/p/bazel/ng-bootstrap/src/BUILD.bazel", line 12, in sass_binary
-                glob(["styles.css", "styles.scss"])[0]
-index out of range (index is 0, but sequence has 0 elements)
-ERROR: error loading package 'src': Package 'src' contains errors
-INFO: Elapsed time: 22.169s
-INFO: 0 processes.
-FAILED: Build did NOT complete successfully (1 packages loaded)
+16:58 $ ng build --leaveBazelFilesOnDisk
+INFO: Analyzed target //src:prodapp (523 packages loaded, 19492 targets configured).
+INFO: Found 1 target...
+ERROR: /Users/cryan/code/p/bazel/ng-bootstrap/src/BUILD.bazel:10:1: SassCompiler src/global_stylesheet.css fa
+iled (Exit 65)
+Error: Can't find stylesheet to import.
+  ╷
+2 │ @import '~bootstrap/scss/bootstrap';
+  │         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ╵
+  src/styles.scss 2:9  root stylesheet
+Target //src:prodapp failed to build
+Use --verbose_failures to see the command lines of failed build steps.
+ERROR: /Users/cryan/code/p/bazel/ng-bootstrap/src/BUILD.bazel:58:1 SassCompiler src/global_stylesheet.css fai
+led (Exit 65)
+INFO: Elapsed time: 47.338s, Critical Path: 3.31s
+INFO: 1 process: 1 local.
+FAILED: Build did NOT complete successfully
 /Users/cryan/code/p/bazel/ng-bootstrap/node_modules/@bazel/bazel-darwin_x64/bazel-0.28.1-darwin-x86_64 failed with code 1.
 ```
 
+Workaournd relative path
+```scss
+@import '../node_modules//bootstrap/scss/bootstrap.scss';
+```
 
+ERROR
+```
+ERROR: /Users/cryan/code/p/bazel/ng-bootstrap/src/BUILD.bazel:24:1: Compiling Angular templates (ngc) //src:s
+rc failed (Exit 1)
+src/app/app.module.ts(7,30): error TS2307: Cannot find module '@ng-bootstrap/ng-bootstrap'.
 
+Target //src:prodapp failed to build
+Use --verbose_failures to see the command lines of failed build steps.
+INFO: Elapsed time: 31.515s, Critical Path: 19.48s
+INFO: 2 processes: 2 local.
+FAILED: Build did NOT complete successfully
+/Users/cryan/code/p/bazel/ng-bootstrap/node_modules/@bazel/bazel-darwin_x64/bazel-0.28.1-darwin-x86_64 failed with code 1.
+```
+
+Add "@npm//@ng-bootstrap/ng-bootstrap", to BUILD.bazel
+
+ERROR
+```
+17:18 $ ng build --leaveBazelFilesOnDisk
+INFO: Analyzed target //src:prodapp (525 packages loaded, 19900 targets configured).
+INFO: Found 1 target...
+ERROR: /Users/cryan/code/p/bazel/ng-bootstrap/src/BUILD.bazel:24:1: Compiling Angular templates (ngc) //src:s
+rc failed (Exit 1)
+Unexpected value 'NgbAlertModule in /private/var/tmp/_bazel_cryan/6001c764db77e9e4437b171720c1971d/execroot/p
+roject/external/npm/node_modules/@ng-bootstrap/ng-bootstrap/ng-bootstrap.d.ts' imported by the module 'AppModule in /private/var/tmp/_bazel_cryan/6001c764db77e9e4437b171720c1971d/execroot/project/src/app/app.module.ts'. Please add a @NgModule annotation.
+Can't bind to 'dismissible' since it isn't a known property of 'ngb-alert'.
+1. If 'ngb-alert' is an Angular component and it has 'dismissible' input, then verify that it is part of this module.
+2. If 'ngb-alert' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@NgModule.schemas' of this component. ("
+  </h1>
+</div>
+<ngb-alert [ERROR ->][dismissible]="false">
+  <strong>Warning!</strong> Better check yourself, you're not looking too good")
+'ngb-alert' is not a known element:
+1. If 'ngb-alert' is an Angular component, then verify that it is part of this module.
+2. If 'ngb-alert' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message. ("
+  </h1>
+</div>
+[ERROR ->]<ngb-alert [dismissible]="false">
+  <strong>Warning!</strong> Better check yourself, you're not looki")
+
+Target //src:prodapp failed to build
+Use --verbose_failures to see the command lines of failed build steps.
+INFO: Elapsed time: 18.690s, Critical Path: 6.59s
+INFO: 0 processes.
+FAILED: Build did NOT complete successfully
+/Users/cryan/code/p/bazel/ng-bootstrap/node_modules/@bazel/bazel-darwin_x64/bazel-0.28.1-darwin-x86_64 failed with code 1.
+```
+
+Add `"node_modules/@ng-bootstrap/**/*"` to angular-metatdata.tsconfig.json
+```json
+"node_modules/@ng-bootstrap/**/*"
+```
+
+Run
+```bash
+yarn run postinstall
+```
+
+ERROR
+```
+20:15 $ ng build --leaveBazelFilesOnDisk
+INFO: Analyzed target //src:prodapp (0 packages loaded, 0 targets configured).
+INFO: Found 1 target...
+ERROR: /Users/cryan/code/p/bazel/ng-bootstrap/src/BUILD.bazel:24:1: Compiling Angular templates (ngc) //src:s
+rc failed (Exit 1)
+src/main.dev.ts(2,9): error TS2305: Module '"./app/app.module.ngfactory"' has no exported member 'AppModuleNg
+Factory'.
+src/main.prod.ts(3,9): error TS2305: Module '"./app/app.module.ngfactory"' has no exported member 'AppModuleNgFactory'.
+
+Target //src:prodapp failed to build
+Use --verbose_failures to see the command lines of failed build steps.
+INFO: Elapsed time: 7.025s, Critical Path: 5.88s
+INFO: 0 processes.
+FAILED: Build did NOT complete successfully
+/Users/cryan/code/p/bazel/ng-bootstrap/node_modules/@bazel/bazel-darwin_x64/bazel-0.28.1-darwin-x86_64 failed with code 1.
+```
 
 
 
