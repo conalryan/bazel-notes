@@ -104,3 +104,17 @@ app.module.ngfactory.js
 app.module.ngfactory.js.map
 app.module.ngsummary.json
 ```
+
+6. [Add Bazel](https://angular.io/guide/bazel)
+```bash
+ng add @angular/bazel
+```
+
+Changes: https://github.com/conalryan/bazel/compare/b52703e1fff6aba49b69437bf4646f0087d28737...237e66538171e5e2ada825652e08a9afaf94c9d9
+
+7. Build
+```bash
+ng build
+# or
+yarn run build
+```
