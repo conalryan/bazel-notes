@@ -2,12 +2,12 @@
 
 1. Generate new app
 ```bash
-ng new ng-new-my-app
+ng new ng-new-ngc-my-app
 ```
 
 2. Build new app
 ```bash
-cd ng-new-my-app && \
+cd ng-new-ngc-my-app && \
 ng build
 # or
 yarn run build
@@ -58,7 +58,54 @@ vendor-es5.js
 vendor-es5.js.map
 ```
 
-5. [Add Bazel](https://angular.io/guide/bazel)
+5. Add Angular Compiler
+Add to "scripts" in package.json
+
+```json
+"scripts": {
+  "compile": "ngc"
+}`
+```
+
+Run
+```bash
+yarn run compile
+```
+
+Check your output (refer to `tsconfig.json#outDir`)
+```
+"outDir": "./dist/out-tsc/src/app",
+```
+```bash
+$ ls -1a
+.
+..
+app-routing.module.js
+app-routing.module.js.map
+app-routing.module.metadata.json
+app-routing.module.ngfactory.js
+app-routing.module.ngfactory.js.map
+app-routing.module.ngsummary.json
+app.component.js
+app.component.js.map
+app.component.metadata.json
+app.component.ngfactory.js
+app.component.ngfactory.js.map
+app.component.ngsummary.json
+app.component.scss.shim.ngstyle.js
+app.component.scss.shim.ngstyle.js.map
+app.component.spec.js
+app.component.spec.js.map
+app.component.spec.ngsummary.json
+app.module.js
+app.module.js.map
+app.module.metadata.json
+app.module.ngfactory.js
+app.module.ngfactory.js.map
+app.module.ngsummary.json
+```
+
+6. [Add Bazel](https://angular.io/guide/bazel)
 ```bash
 ng add @angular/bazel
 ```
