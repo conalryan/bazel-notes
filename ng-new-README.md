@@ -130,3 +130,9 @@ yarn run start
 ```bash
 yarn run postinstall
 ```
+
+10. Run
+````bash
+ng build --leaveBazelFilesOnDisk
+````
+
