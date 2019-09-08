@@ -13,7 +13,7 @@ ng build
 yarn run build
 ```
 
-main.ts
+3. Verify main.ts
 ```typescript
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -29,7 +29,7 @@ platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
 ```
 
-dist
+4. Verify /dist
 ```
 # $ ls -1a ./dist/ng-new-my-app/
 .
