@@ -118,3 +118,15 @@ ng build
 # or
 yarn run build
 ```
+
+8. Run
+```bash
+ng serve
+# or
+yarn run start
+```
+
+9. Run
+```bash
+yarn run postinstall
+```
