@@ -119,6 +119,26 @@ ng build
 yarn run build
 ```
 
+Note main.ts is replaced by 
+`main.dev.ts`
+````typescript
+
+import {platformBrowser} from '@angular/platform-browser';
+import {AppModuleNgFactory} from './app/app.module.ngfactory';
+
+platformBrowser().bootstrapModuleFactory(AppModuleNgFactory);
+````
+and
+`main.prod.ts`
+````typescript
+import {enableProdMode} from '@angular/core';
+import {platformBrowser} from '@angular/platform-browser';
+import {AppModuleNgFactory} from './app/app.module.ngfactory';
+
+enableProdMode();
+platformBrowser().bootstrapModuleFactory(AppModuleNgFactory);
+````
+
 8. Run
 ```bash
 ng serve
@@ -136,3 +156,9 @@ yarn run postinstall
 ng build --leaveBazelFilesOnDisk
 ````
 
+11. Add ng-bootstrap
+```bash
+yarn add @ng-bootstrap/ng-bootstrap
+# or
+# npm install --save @ng-bootstrap/ng-bootstrap
+```
