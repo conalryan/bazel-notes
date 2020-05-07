@@ -21,6 +21,19 @@ Build the application by running:
 $ bazel build :java-maven
 ```
 
+Output to:
+`./bazel-bin/java-maven.jar`
+
+
+Run the application
+```
+$ bazel run :java-maven
+```
+
+cr. However, try to run the jar as is
+`java -jar ./bazel-bin/java-maven.jar`
+no main manifest attribut, in ./bazel-bin/java-maven.jar
+
 Test the application by running:
 
 ```

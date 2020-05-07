@@ -1,0 +1,25 @@
+# Add rules here to build your software
+# See https://docs.bazel.build/versions/master/build-ref.html#BUILD_files
+load("@npm//@babel/cli:index.bzl", "babel")
+load("@npm//mocha:index.bzl", "mocha_test")
+load("@npm//http-server:index.bzl", "http_server")
+
+babel(
+    name = "compile",
+    data = [
+        "helloworld.ts",
+        ".babelrc",
+        "@npm//@babel/preset-env",
+        "@npm//@babel/preset-typescript",
+    ],
+    outs = ["helloworld.js"],
+    args = [
+        "helloworld.ts",
+        "--config-file",
+        "$(execpath .babelrc)",
+        "--out-file",
+        "$(execpath helloworld.js)",
+    ],
+)
+# $(execpath) helper in Bazel so we don’t need to hardcode paths to the inputs or outputs.
+
