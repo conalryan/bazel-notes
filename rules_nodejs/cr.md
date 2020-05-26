@@ -9,4 +9,4 @@ Angular Example:
   - Code: https://github.com/bazelbuild/rules_nodejs/tree/master/examples/angular. 
   - Docs: https://bazel.angular.io/ 
 
-https://bazelbuild.github.io/rules_nodejs/
+Refer to npm_init_bazel for exmple of https://bazelbuild.github.io/rules_nodejs/
