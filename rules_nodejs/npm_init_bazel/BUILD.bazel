@@ -12,7 +12,9 @@ babel(
         "@npm//@babel/preset-env",
         "@npm//@babel/preset-typescript",
     ],
-    outs = ["helloworld.js"],
+    outs = [
+        "helloworld.js",
+    ],
     args = [
         "helloworld.ts",
         "--config-file",
@@ -22,4 +24,22 @@ babel(
     ],
 )
 # $(execpath) helper in Bazel so we don’t need to hardcode paths to the inputs or outputs.
+
+http_server(
+    name = "server",
+    data = [
+        "index.html",
+        "dist/bin/helloworld.js",
+    ],
+    args = ["."],
+)
+
+# mocha_test(
+#     name = "unit_tests",
+#     args = ["*.spec.js"],
+#     data = glob(["*.spec.js"]) + [
+#         "@npm//domino",
+#         "app.es5.js",
+#     ],
+# )
 
