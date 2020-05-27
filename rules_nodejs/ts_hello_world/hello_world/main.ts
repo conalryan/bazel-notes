@@ -1,3 +1,5 @@
 import { greet } from '../shared/greeter';
 
-console.log(greet('en-US'));
+export function main(): void {
+  console.log(greet('en-US'));
+}
