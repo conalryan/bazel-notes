@@ -1,10 +1,39 @@
 package(default_visibility=["//visibility:public"])
 
-load("@npm_bazel_typescript//:index.bzl", "ts_library")
+load("@npm_bazel_typescript//:index.bzl", "ts_devserver", "ts_library")
 
 ts_library(
     name = "hello_world",
     srcs = glob(["*.ts"]),
     deps = ["//shared:greetings"],
+)
+
+# You can access the JS output by adding a filegroup rule after the ts_library, for example
+
+# ts_library(
+#     name = "compile",
+#     srcs = ["thing.ts"],
+# )
+
+# filegroup(
+#     name = "thing.js",
+#     srcs = ["compile"],
+#     # Change to es6_sources to get the 'prodmode' JS
+#     output_group = "es5_sources",
+# )
+
+# my_rule(
+#     name = "uses_js",
+#     deps = ["thing.js"],
+# )
+
+ts_devserver(
+    name = "devserver",
+    # We'll collect all the devmode JS sources from these TypeScript libraries
+    deps = [":hello_world"],
+    # This is the path we'll request from the browser, see index.html
+    serving_path = "/bundle.js",
+    # The devserver can serve our static files too
+    static_files = ["index.html"],
 )
 
