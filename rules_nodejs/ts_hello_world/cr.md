@@ -23,3 +23,22 @@ Steps
 
 `yarn add -D @bazel/typescript`
 
+Your TS code must compile under the --declaration flag so that downstream libraries depend only on types, not implementation. This makes Bazel faster by avoiding cascading rebuilds in cases where the types aren’t changed.
+We control the output format and module syntax so that downstream rules can rely on them.
+
+Make sure to remove the --noEmit compiler option from your tsconfig.json. This is not compatible with the ts_library rule.
+
+`
+$ bazel build //hello_world
+Starting local Bazel server and connecting to it...
+ERROR: Failed to load Starlark extension '@npm_bazel_typescript//:index.bzl'.
+Cycle in the workspace file detected. This indicates that a repository is used prior to being defined.
+The following chain of repository dependencies lead to the missing definition.
+ - @npm_bazel_typescript
+This could either mean you have to add the '@npm_bazel_typescript' repository with a statement like `http_archive` in your WORKSPACE file (note that transitive dependencies are not added automatically), or move an existing definition earlier in your WORKSPACE file.
+ERROR: cycles detected during target parsing
+INFO: Elapsed time: 4.740s
+INFO: 0 processes.
+FAILED: Build did NOT complete successfully (0 packages loaded)
+`
+
