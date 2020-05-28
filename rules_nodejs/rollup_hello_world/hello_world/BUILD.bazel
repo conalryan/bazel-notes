@@ -1,0 +1,12 @@
+load("@npm_bazel_rollup//:index.bzl", "rollup_bundle")
+
+package(default_visibility=["//visibility:public"])
+
+rollup_bundle(
+    name = "bundle",
+    srcs = ["dependency.js"],
+    entry_point = "input.js",
+    # no config_file will default to @npm_bazel_rollup//:rollup.config.js
+    #config_file = "rollup.config.js",
+)
+

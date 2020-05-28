@@ -3,7 +3,9 @@
     "start": "ibazel run //hello_world:devserver"
   },
   "devDependencies": {
+    "@bazel/rollup": "^1.6.1",
     "@bazel/typescript": "^1.6.1",
+    "rollup": "^2.11.2",
     "typescript": "^3.9.3"
   }
 }
