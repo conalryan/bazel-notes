@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "ibazel run //hello_world:devserver"
+  },
+  "devDependencies": {
+    "@bazel/typescript": "^1.6.1",
+    "typescript": "^3.9.3"
+  }
+}

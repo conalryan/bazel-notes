@@ -4,7 +4,7 @@
 # See https://docs.bazel.build/versions/master/build-ref.html#workspace
 workspace(
     # How this workspace would be referenced with absolute labels from another workspace
-    name = "ts_hello_world",
+    name = "ts_hello_world_html",
     # Map the @npm bazel workspace to the node_modules directory.
     # This lets Bazel use the same node_modules as other local tooling.
     managed_directories = {"@npm": ["node_modules"]},
@@ -36,7 +36,3 @@ install_bazel_dependencies()
 # Set up TypeScript toolchain
 load("@npm_bazel_typescript//:index.bzl", "ts_setup_workspace")
 ts_setup_workspace()
-
-# Fetch transitive Bazel dependencies of npm_bazel_karma 
-load("@npm_bazel_karma//:package.bzl", "npm_bazel_karma_dependencies")
-npm_bazel_karma_dependencies()

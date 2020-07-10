@@ -1,1 +1,25 @@
+package(default_visibility=["//visibility:public"])
+
+load("@npm_bazel_typescript//:index.bzl", "ts_devserver", "ts_library")
+load("@npm_bazel_jasmine//:index.bzl", "jasmine_node_test")
+
+ts_library(
+    name = "hello_world",
+    srcs = glob(["src/*.ts"]),
+    deps = ["@npm//@types/jasmine"],
+)
+
+jasmine_node_test(
+    name = "my_test",
+    srcs = [
+        "src/index.spec.ts",
+    ],
+    deps = [
+        "@npm//@types/jasmine",
+        "@npm//jasmine",
+        "@npm//jasmine-core",
+        ":hello_world",
+    ],
+)
+
 exports_files(["tsconfig.json"], visibility = ["//visibility:public"])
