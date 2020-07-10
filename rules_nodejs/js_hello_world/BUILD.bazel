@@ -1,0 +1,46 @@
+package(default_visibility=["//visibility:public"])
+
+load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
+
+# @npm//@bazel/jasmine
+# @npm//:node_modules/@bazel/jasmine/jasmine_runner.js
+
+# load("@npm//@bazel/jasmine", "jasmine_node_test")
+# ERROR: ... The label must reference a file with extension '.bzl'
+
+# load("@npm//@bazel/jasmine:index.bzl", "jasmine_node_test")
+# ERROR: error loading package '': cannot load '@npm//@bazel/jasmine:index.bzl': no such file
+
+# load("@npm_bazel_jasmine:index.bzl", "jasmine_node_test")
+# ERROR; invalid repository name '@npm_bazel_jasmine:index.bzl':
+
+# WOW! is there an easier way to find the package name?
+load("@npm_bazel_jasmine//:index.bzl", "jasmine_node_test")
+
+filegroup(
+    name = "entry_file",
+    srcs = ["src/index.js"],
+)
+
+# yarn add -D @bazel/bazelisk @bazel/ibazel
+# bazel build //:my_binary
+# bazel run //:my_binary -> prints Hello world
+nodejs_binary(
+    name = "my_binary",
+    entry_point = ":entry_file",
+)
+
+# yarn add -D @bazel/jasmine
+# load("@npm_bazel_jasmine//:index.bzl", "jasmine_node_test")
+jasmine_node_test(
+    name = "my_test",
+    data = [
+        ":entry_file",
+    ],
+    srcs = [
+        "src/index.spec.js",
+    ],
+    deps = [
+        "@npm//jasmine",
+    ],
+)

@@ -1,4 +1,5 @@
 
-dist
 bazel-out
+dist
 node_modules
+

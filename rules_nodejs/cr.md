@@ -1,5 +1,4 @@
-Bazel Rules for Javascript aka rules_nodejs 
---------------------------------------------------------------------------------
+# Bazel Rules for Javascript aka rules_nodejs 
 
 We would call this `rules_javascript` if renames weren't so disruptive. 
 
@@ -11,56 +10,62 @@ Angular Example:
 
 Refer to npm_init_bazel for exmple of https://bazelbuild.github.io/rules_nodejs/
 
-Installation
-================================================================================
+## Bazel-managed vs self-managed dependencies
 
-Bazel-managed vs self-managed dependencies
---------------------------------------------------------------------------------
-You have two options for managing your node_modules dependencies: Bazel-managed or self-managed.
+You have two options for managing your *node_modules* dependencies: 
 
-With the Bazel-managed dependencies approach, Bazel is responsible for making sure that node_modules is up to date with your package[-lock].json or yarn.lock files. This means Bazel will set it up when the repository is first cloned, and rebuild it whenever it changes. With the yarn_install or npm_install repository rules, Bazel will setup your node_modules for you in an external workspace named after the repository rule. For example, a yarn_install(name = "npm", ...) will setup an external workspace named @npm with the node_modules folder inside of it as well as generating targets for each root npm package in node_modules for use as dependencies to other rules.
+1. Bazel-managed
+2. Self-managed
 
-For Bazel to provide the strongest guarantees about reproducibility and the fidelity of your build, it is recommended that you use Bazel-managed dependencies. This approach also allows you to use the generated fine-grained npm package dependencies which can significantly reduce the number of inputs to actions, making Bazel sand-boxing and remote-execution faster if there are a large number of files under node_modules.
+1. Bazel-managed
+    - Bazel controls `yarn.lock` files. 
+    - Bazel will set it up when the repository is first cloned, and rebuild it whenever it changes. With the `yarn_install` or `npm_install` repository rules
+    - Bazel will setup your `node_modules` for you in an external workspace named after the repository rule. For example, a `yarn_install(name = "npm", ...)` will setup an external workspace named `@npm` with the `node_modules` folder inside of it as well as generating targets for each root npm package in `node_modules` for use as dependencies to other rules.
+    - For Bazel to provide the strongest guarantees about reproducibility and the fidelity of your build, it is recommended that you use Bazel-managed dependencies. This approach also allows you to use the generated fine-grained npm package dependencies which can significantly reduce the number of inputs to actions, making Bazel sand-boxing and remote-execution faster if there are a large number of files under node_modules.
+2. Self-managed
+    - err...why?
 
-yarn_install vs. npm_install
-yarn_install is the preferred rule for setting up Bazel-managed dependencies for a number of reasons:
+## yarn vs. npm
 
-yarn_install will use the global yarn cache by default which will improve your build performance (this can be turned off with the use_global_yarn_cache attribute)
-npm has a known peer dependency hoisting issue that can lead to missing peer dependencies in some cases (see https://github.com/bazelbuild/rules_nodejs/issues/416)
+`yarn_install` is the preferred rule for setting up Bazel-managed dependencies for a number of reasons:
 
-Multiple sets of npm dependencies
-If your workspace has multiple applications, each with their own package.json and npm deps, yarn_install (or npm_install) can be called separately for each.
+- `yarn_install` will use the global yarn cache by default which will improve your build performance (this can be turned off with the `use_global_yarn_cache` attribute)
 
-workspace(
-    name = "my_wksp",
-    managed_directories = {
-        "@app1_npm": ["app1/node_modules"],
-        "@app2_npm": ["app2/node_modules"],
-    },
-)
+- `npm` has a known peer dependency hoisting issue that can lead to missing peer dependencies in some cases (see https://github.com/bazelbuild/rules_nodejs/issues/416)
 
-yarn_install(
-    name = "app1_npm",
-    package_json = "//app1:package.json",
-    yarn_lock = "//app1:yarn.lock",
-)
+## Multiple sets of npm dependencies
+If your workspace has multiple applications, each with their own `package.json` and npm deps, `yarn_install` can be called separately for each.
+>
+    workspace(
+        name = "my_wksp",
+        managed_directories = {
+            "@app1_npm": ["app1/node_modules"],
+            "@app2_npm": ["app2/node_modules"],
+        },
+    )
 
-yarn_install(
-    name = "app2_npm",
-    package_json = "//app2:package.json",
-    yarn_lock = "//app2:yarn.lock",
-)
+    yarn_install(
+        name = "app1_npm",
+        package_json = "//app1:package.json",
+        yarn_lock = "//app1:yarn.lock",
+    )
 
-[Built-in Rules](https://bazelbuild.github.io/rules_nodejs/Built-ins.html)
-================================================================================
-https://bazelbuild.github.io/rules_nodejs/Built-ins.html#nodejs_binary
+    yarn_install(
+        name = "app2_npm",
+        package_json = "//app2:package.json",
+        yarn_lock = "//app2:yarn.lock",
+    )
+>
 
-nodejs_binary
---------------------------------------------------------------------------------
-entryPoint: The script which should be executed first, usually containing a main function.
+## [Built-in Rules](https://bazelbuild.github.io/rules_nodejs/Built-ins.html)
 
-If the entry point target is a rule, it should produce a single JavaScript entry file that will be passed to the nodejs_binary rule. For example:
+### [nodejs_binary](https://bazelbuild.github.io/rules_nodejs/Built-ins.html#nodejs_binary)
 
+`entryPoint`: The script which should be executed first, usually containing a main function.
+
+If the entry point target is a rule, it should produce a single JavaScript entry file that will be passed to the `nodejs_binary` rule. For example:
+
+```BUILD.bazel
 filegroup(
     name = "entry_file",
     srcs = ["main.js"],
@@ -70,21 +75,23 @@ nodejs_binary(
     name = "my_binary",
     entry_point = ":entry_file",
 )
-The entry_point can also be a label in another workspace:
+# The entry_point can also be a label in another workspace:
 
 nodejs_binary(
     name = "history-server",
     entry_point = "@npm//:node_modules/history-server/modules/cli.js",
     data = ["@npm//history-server"],
 )
+```
 
-nodejs_test
---------------------------------------------------------------------------------
-Identical to nodejs_binary, except this can be used with bazel test as well. When the binary returns zero exit code, the test passes; otherwise it fails.
+### nodejs_test
 
-nodejs_test is a convenient way to write a novel kind of test based on running your own test runner. For example, the ts-api-guardian library has a way to assert the public API of a TypeScript program, and uses nodejs_test here: https://github.com/angular/angular/blob/master/tools/ts-api-guardian/index.bzl
+Identical to `nodejs_binary`, except this can be used with bazel test as well. When the binary returns zero exit code, the test passes; otherwise it fails.
 
-If you just want to run a standard test using a test runner like Karma or Jasmine, use the specific rules for those test runners, e.g. jasmine_node_test.
+`nodejs_test` is a convenient way to write a novel kind of test based on running your own test runner. 
+For example, the `ts-api-guardian` library has a way to assert the public API of a TypeScript program, and uses `nodejs_test` here: https://github.com/angular/angular/blob/master/tools/ts-api-guardian/index.bzl
+
+If you just want to run a standard test using a test runner like Karma or Jasmine, use the specific rules for those test runners, e.g. `jasmine_node_test`.
 
 To debug a Node.js test, we recommend saving a group of flags together in a “config”. Put this in your tools/bazel.rc so it’s shared with your team:
 
@@ -92,12 +99,12 @@ To debug a Node.js test, we recommend saving a group of flags together in a “c
 test:debug --test_arg=--node_options=--inspect-brk --test_output=streamed --test_strategy=exclusive --test_timeout=9999 --nocache_test_results
 Now you can add --config=debug to any bazel test command line. The runtime will pause before executing the program, allowing you to connect a remote debugger.
 
-pkg_npm
---------------------------------------------------------------------------------
+### pkg_npm
+
 The pkg_npm rule creates a directory containing a publishable npm artifact.
 
 Example:
-
+```BUILD.bazel
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 
 pkg_npm(
@@ -106,7 +113,7 @@ pkg_npm(
     deps = [":my_typescript_lib"],
     substitutions = {"//internal/": "//"},
 )
-You can use a pair of // BEGIN-INTERNAL ... // END-INTERNAL comments to mark regions of files that should be elided during publishing. For example:
+# You can use a pair of // BEGIN-INTERNAL ... // END-INTERNAL comments to mark regions of files that should be elided during publishing. # For example:
 
 function doThing() {
     // BEGIN-INTERNAL
@@ -114,31 +121,37 @@ function doThing() {
     doInternalOnlyThing();
     // END-INTERNAL
 }
-With the Bazel stamping feature, pkg_npm will replace any placeholder version in your package with the actual version control tag. See the stamping documentation
+```
+With the Bazel stamping feature, `pkg_npm` will replace any placeholder version in your package with the actual version control tag. See the stamping documentation
 
 Usage:
 
-pkg_npm yields three labels. Build the package directory using the default label:
+`pkg_npm` yields three labels. Build the package directory using the default label:
+```bash
+# BUILD
+bazel build :my_package
+# Target //:my_package up-to-date: bazel-out/fastbuild/bin/my_package
+ls -R bazel-out/fastbuild/bin/my_package
 
-$ bazel build :my_package
-Target //:my_package up-to-date:
-  bazel-out/fastbuild/bin/my_package
-$ ls -R bazel-out/fastbuild/bin/my_package
-Dry-run of publishing to npm, calling npm pack (it builds the package first if needed):
+# PACK
+# Dry-run of publishing to npm, calling npm pack (it builds the package first if needed):
+bazel run :my_package.pack
+# INFO: Running command line: bazel-out/fastbuild/bin/my_package.pack
+# my-package-name-1.2.3.tgz
+tar -tzf my-package-name-1.2.3.tgz
 
-$ bazel run :my_package.pack
-INFO: Running command line: bazel-out/fastbuild/bin/my_package.pack
-my-package-name-1.2.3.tgz
-$ tar -tzf my-package-name-1.2.3.tgz
-Actually publish the package with npm publish (also builds first):
-
+# PUBLISH
+# Actually publish the package with npm publish (also builds first):
 # Check login credentials
-$ bazel run @nodejs//:npm_node_repositories who
+bazel run @nodejs//:npm_node_repositories who
 # Publishes the package
-$ bazel run :my_package.publish
-You can pass arguments to npm by escaping them from Bazel using a double-hyphen, for example:
+bazel run :my_package.publish
+```
 
+You can pass arguments to npm by escaping them from Bazel using a double-hyphen, for example:
+```bash
 bazel run my_package.publish -- --tag=next
+```
 
 `pkg_web`
 --------------------------------------------------------------------------------
@@ -147,7 +160,8 @@ Assembles a web application from source files.
 # Usage
 pkg_web(name, additional_root_paths, srcs)
 
-yarn_install
+`yarn_install`
+-------------------------------------------------------------------------------
 Runs yarn install during workspace setup.
 
 This rule will set the environment variable BAZEL_YARN_INSTALL to ‘1’ (unless it set to another value in the environment attribute). Scripts may use to this to check if yarn is being run by the yarn_install repository rule.
@@ -170,7 +184,7 @@ copy_to_bin(name, srcs, kwargs)
 
 `npm_package_bin`
 --------------------------------------------------------------------------------
-Run an arbitrary npm package binary (e.g. a program under node_modules/.bin/\*) under Bazel.
+Run an arbitrary npm package binary (e.g. a program under `node_modules/.bin/\*)` under Bazel.
 
 It must produce outputs. If you just want to run a program with bazel run, use the nodejs_binary rule.
 
@@ -185,7 +199,7 @@ npm_package_bin(tool, package, package_bin, data, outs, args, output_dir, kwargs
 [Generated Repositories](https://bazelbuild.github.io/rules_nodejs/repositories.html)
 ================================================================================
 
-rules_nodejs produces several repositories for you to reference. Bazel represents your workspace as one repository, and code fetched or installed from outside your workspace lives in other repositories. These are referenced with the @repo// syntax in your BUILD files.
+rules_nodejs produces several repositories for you to reference. Bazel represents your workspace as one repository, and code fetched or installed from outside your workspace lives in other repositories. These are referenced with the `@repo//` syntax in your BUILD files.
 
 @nodejs
 --------------------------------------------------------------------------------
@@ -193,9 +207,11 @@ This repository is created by calling the node_repositories function in your WOR
 
 As always, bazel query is useful for learning about what targets are available.
 
-$ bazel query @nodejs//...
-@nodejs//:node
+```bash
+bazel query @nodejs//...
+# @nodejs//:node
 ...
+
 You don’t typically need to reference the @nodejs repository from your BUILD files because it’s used behind the scenes to run node and fetch dependencies.
 
 Some ways you can use this:

@@ -1,1 +1,1 @@
-exports_files(["tsconfig.json"], visibility = ["//visibility:public"])
+exports_files(["rollup.config.js", "tsconfig.json"], visibility = ["//visibility:public"])
