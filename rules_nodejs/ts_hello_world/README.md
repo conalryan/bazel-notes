@@ -2,9 +2,11 @@
 
 ## Quick Start
 
+`bazel build //...`
 
+`bazel test //:my_test`
 
-## Setup
+## Init
 
 ```bash
 yarn add -D \

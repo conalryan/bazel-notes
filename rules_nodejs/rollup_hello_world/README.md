@@ -1,17 +1,12 @@
 [Rollup Rule for Bazel](https://bazelbuild.github.io/rules_nodejs/Rollup.html)
 ================================================================================
 
-Installation
+Quick start
+-------------------------------------------------------------------------------
+`bazel build //...`
+
+Init
 --------------------------------------------------------------------------------
-`yadd add -D typescript`
-
-`tsc -init`
-
-`yarn add -D @bazel/typescript`
-
-`yarn add -D @bazel/rollup`
-
-`yarn -D add rollup`
+`yarn add -D @bazel/rollup rollup`
 
 `yarn rollup --config`
-

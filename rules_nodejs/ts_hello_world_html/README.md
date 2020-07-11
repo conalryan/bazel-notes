@@ -59,18 +59,23 @@ Bazel’s TypeScript compiler has your workspace path mapped, so you can import 
 
 /WORKSPACE:
 
-workspace(name = "myworkspace")
+`workspace(name = "myworkspace")`
+
 /some/long/path/to/deeply/nested/subdirectory.ts:
 
-import {thing} from 'myworkspace/place';
+`import {thing} from 'myworkspace/place';`
+
 will import from /place.ts.
 
 Since this is an extension to the vanilla TypeScript compiler, editors which use the TypeScript language services to provide code completion and inline type checking will not be able to resolve the modules. In the above example, adding
 
+```json
 "paths": {
+    "baseUrl": ".", // This must be specified if "paths" is.
     "myworkspace/*": ["*"]
 }
+```
 
-to tsconfig.json will fix the imports for the common case of using absolute paths. See path mapping for more details on the paths syntax.
+to `tsconfig.json` will fix the imports for the common case of using absolute paths. See path mapping for more details on the paths syntax.
 
-Similarly, you can use path mapping to teach the editor how to resolve imports from ts_library rules which set the module_name attribute.
+Similarly, you can use path mapping to teach the editor how to resolve imports from `ts_library` rules which set the module_name attribute.

@@ -5,7 +5,10 @@ load("@npm_bazel_typescript//:index.bzl", "ts_devserver", "ts_library")
 ts_library(
     name = "hello_world",
     srcs = glob(["*.ts"]),
-    deps = ["//shared:greetings"],
+    deps = [
+        "@npm//@types/node",
+        "//shared:greetings"
+    ],
 )
 
 # You can access the JS output by adding a filegroup rule after the ts_library, for example
