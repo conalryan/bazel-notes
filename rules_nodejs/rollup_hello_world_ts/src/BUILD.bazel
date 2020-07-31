@@ -1,13 +1,19 @@
-load("@npm_bazel_rollup//:index.bzl", "rollup_bundle")
-
 package(default_visibility=["//visibility:public"])
 
-# TODO: cr. Pass in result of ts_library target
-# rollup_bundle(
-#     name = "bundle",
-#     srcs = ["foo.js"],
-#     entry_point = "main.js",
-#     # no config_file will default to @npm_bazel_rollup//:rollup.config.js
-#     config_file = "//:rollup.config.js",
-# )
+load("@npm_bazel_rollup//:index.bzl", "rollup_bundle")
+load("@npm_bazel_typescript//:index.bzl", "ts_devserver", "ts_library")
 
+ts_library(
+    name = "foo",
+    srcs = [
+        "foo.ts",
+        "main.ts",
+    ],
+)
+
+rollup_bundle(
+    name = "bundle",
+    deps = [ "foo" ],
+    entry_point = "main.ts",
+    # config_file = "//:rollup.config.js",
+)

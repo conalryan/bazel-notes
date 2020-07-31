@@ -10,3 +10,27 @@ rollup_bundle(
     config_file = "//:rollup.config.js",
 )
 
+
+# format
+# (String): “Specifies the format of the generated bundle. One of the following:
+# - amd: Asynchronous Module Definition, used with module loaders like RequireJS
+# - cjs: CommonJS, suitable for Node and other bundlers
+# - esm: Keep the bundle as an ES module file, suitable for other bundlers and inclusion as a <script type=module> tag in modern browsers
+# - iife: A self-executing function, suitable for inclusion as a <script> tag. (If you want to create a bundle for your application, you probably want to use this.)
+# - umd: Universal Module Definition, works as amd, cjs and iife all in one
+# - system: Native format of the SystemJS loader
+[
+    rollup_bundle(
+        name = "bundle.%s" % format,
+        srcs = ["foo.js"],
+        entry_point = "main.js",
+        format = format,
+        # output.name = "bundle.%s" % format,
+        config_file = "//:rollup.config.js",
+    )
+    for format in [
+        "cjs",
+        "umd",
+    ]
+]
+
